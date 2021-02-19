@@ -5,6 +5,7 @@ import random
 from discord.ext import commands
 from discord.ext.commands import bot
 import scrape
+import tkn
 from scrape import discordjoke
 
 
@@ -34,31 +35,4 @@ async def on_message(message):
     if message.content.startswith(str("<:travvypatty:769418655829196810>")):
         await message.channel.send("https://cdn.discordapp.com/attachments/321896054452649985/769591917042204713/small_trav.PNG")
 
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-        
-        
- 
- 
- 
-      
-
-
-
-client.run("NzY4OTg2MjAwNTMwMjIzMTE0.X5IcNQ.AOEikGPrmwQ7_X8tRwNhah7VRCA")
+client.run(tkn.tkn)
