@@ -27,16 +27,6 @@ def discordjoke():
             file1.write("\n")
             file1.write(new_url)
             
-        # pageurl =(random.choice(extracted_records))
-        # request2 = urllib.request.Request(pageurl)
-        # html2 = urllib.request.urlopen(pageurl).read()
-        # soup2 = BeautifulSoup(html2, 'html.parser')
-
-        # post = soup2.find_all("h1", class_="_eYtD2XCVieq6emjKBH3m")[0].text.strip()
-        # response = soup2.find_all('p', class_="_1qeIAgB0cPwnLhDF9XSiJM")[0].text.strip()
-        # final= post + " ------------------------ " + response
-        # file1.close()
-        # return final
     except:
         return brokenbot
 
