@@ -5,6 +5,8 @@ import random
 from random import randint
 
 
+nextnumber = 1
+
 def discordjoke():   
     file1 = open("Jokes.txt", "w+")
     brokenbot = "Broken Bot Try again 5 seconds"
@@ -25,57 +27,43 @@ def discordjoke():
             file1.write("\n")
             file1.write(new_url)
             
-            
+        # pageurl =(random.choice(extracted_records))
+        # request2 = urllib.request.Request(pageurl)
+        # html2 = urllib.request.urlopen(pageurl).read()
+        # soup2 = BeautifulSoup(html2, 'html.parser')
 
-        pageurl =(random.choice(extracted_records))
-        request2 = urllib.request.Request(pageurl)
-        html2 = urllib.request.urlopen(request2).read()
-        soup2 = BeautifulSoup(html2, 'html.parser')
-
-        post = soup2.find_all("h1", class_="_eYtD2XCVieq6emjKBH3m")[0].text.strip()
-        response = soup2.find_all('p', class_="_1qeIAgB0cPwnLhDF9XSiJM")[0].text.strip()
-        final= post + " ------------------------ " + response
-        file1.close()
-        return final
+        # post = soup2.find_all("h1", class_="_eYtD2XCVieq6emjKBH3m")[0].text.strip()
+        # response = soup2.find_all('p', class_="_1qeIAgB0cPwnLhDF9XSiJM")[0].text.strip()
+        # final= post + " ------------------------ " + response
+        # file1.close()
+        # return final
     except:
-        file2 = open("Jokes.txt", "r")
+        return brokenbot
 
-        randomLine = file2.readlines(randint(2, 26))
-        
-        
-        request3 = urllib.request.Request(randomLine)
-        html3 = urllib.request.urlopen(request3).read()
-        soup3 = BeautifulSoup(html3, 'html.parser')
-        post2 = soup2.find_all("h1", class_="_eYtD2XCVieq6emjKBH3m")[0].text.strip()
-        response2 = soup2.find_all('p', class_="_1qeIAgB0cPwnLhDF9XSiJM")[0].text.strip()
-        final2 = post + " ------------------------ " + response2
-        file2.close()
-        return final2
+def discordjokesingle():
+    global nextnumber
+    if (nextnumber == 1):
+        discordjoke()
+
+    brokenbot = "Broken Bot Try again 5 seconds"
+    file2 = open("Jokes.txt", "r")
+    filereadline = file2.readlines()
+    
+    nextline = filereadline[nextnumber]
+    nextnumber += 1 
+
+    if (nextnumber == 25):
+        nextnumber = 1
+    print(nextnumber)
+
+    request2 = urllib.request.Request(nextline, headers={'User-Agent': 'Mozilla/5.0'})
+    html2 = urllib.request.urlopen(request2).read()
+    soup2 = BeautifulSoup(html2, 'html.parser')
+    post = soup2.find_all("h1", class_="_eYtD2XCVieq6emjKBH3m")[0].text.strip()
+    response = soup2.find_all('p', class_="_1qeIAgB0cPwnLhDF9XSiJM")[0].text.strip()
+    final= post + " ------------------------ " + response
+    file2.close()
+    return final
     
 
-
-
-
-
-
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
