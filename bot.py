@@ -10,51 +10,11 @@ import scrape
 import tkn
 from scrape import discordjoke
 from scrape import discordjokesingle
+from f1 import raceSchedule
 
 client = commands.Bot(command_prefix = "!")
 bot = commands.Bot(command_prefix='?')
 dealercardrandom = 0
-
-roulletepictures = [
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531285312602122/Ballon0.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531287955013642/Ballon1.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531292170944512/Ballon2.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531299594731570/Ballon3.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531303406960640/Ballon4.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531306753884212/Ballon5.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531310777139260/Ballon6.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531315986333736/Ballon7.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531320956583986/Ballon8.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531325230186536/Ballon9.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531329818624008/Ballon10.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531333073666058/Ballon11.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531337405857832/Ballon12.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531341244694558/Ballon13.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531344004677642/Ballon14.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531347698810880/Ballon15.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531350358786098/Ballon16.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531352551882772/Ballon17.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531355429044304/Ballon18.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531356994437130/Ballon19.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532465057333288/Ballon20.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532475321581628/Ballon21.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532531248562247/Ballon22.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532541876011018/Ballon23.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532549120098354/Ballon24.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532557257179226/Ballon25.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532565746581504/Ballon26.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532574687920188/Ballon27.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532581541937152/Ballon28.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532622889910352/Ballon29.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532628253638686/Ballon30.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532635304394752/Ballon31.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532641969012797/Ballon32.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532647971586058/Ballon33.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532656250355712/Ballon34.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532662197878784/Ballon35.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532693038596126/Ballon36.png"
-]
-
 
 @client.event
 async def on_ready():
@@ -65,13 +25,34 @@ async def on_message(message):
 
     if message.content.startswith(str("<:travvypatty:769418655829196810>")):
         await message.channel.send("https://cdn.discordapp.com/attachments/321896054452649985/769591917042204713/small_trav.PNG")
-  
-    await client.process_commands(message)
 
+    if message.content.startswith("f1"):
+        userinput = message.content.split()
+        racenumbersplit = userinput[1]
+        racenumber = int(racenumbersplit) - 1
+
+        racedate = raceSchedule(racenumber)[2]
+        racedate.split()
+        finalracedate = (racedate[5] + racedate[6] +"-" + racedate[8] + racedate[9])
+
+
+        f1embed = discord.Embed(title = str(raceSchedule(racenumber)[0]), color = discord.Color.purple())
+        f1embed.add_field(name = "Country", value = str(raceSchedule(racenumber)[1]), inline=False)
+        f1embed.add_field(name = "City", value = str(raceSchedule(racenumber)[4]), inline=False)
+        f1embed.add_field(name = "Circuit Name", value = str(raceSchedule(racenumber)[3]), inline=False)
+        f1embed.add_field(name = "Date", value = finalracedate,inline=False)
+        await message.channel.send(embed = f1embed)
+       
+        # await message.channel.send(raceSchedule(int(racenumber)))
+        
+
+    await client.process_commands(message)
 
 @client.command()
 async def joke(ctx):
     await ctx.send(str(scrape.discordjokesingle()))
+
+
 
 @client.command()
 async def coinflip(ctx):
@@ -100,10 +81,16 @@ async def coinflip(ctx):
     coinflipwinnings = int(coinflipmath)
 
     while (working == True):
+        if(coinflipfloat < 0):
+            await ctx.send("Wager cannot be negative")
+            Working = False
+            break
+
         if(coinflipfloat > bankamount):
             await ctx.send("You are to broke, try again")
             working = False
             break
+        
             
         if str(coinflipresponse.content.lower()) == "heads":
             if randomcoin == 0:
@@ -154,6 +141,45 @@ async def coinflip(ctx):
 @client.command()
 @commands.cooldown(1,5)
 async def blackjack(ctx):
+    roulletepictures = [
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531285312602122/Ballon0.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531287955013642/Ballon1.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531292170944512/Ballon2.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531299594731570/Ballon3.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531303406960640/Ballon4.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531306753884212/Ballon5.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531310777139260/Ballon6.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531315986333736/Ballon7.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531320956583986/Ballon8.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531325230186536/Ballon9.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531329818624008/Ballon10.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531333073666058/Ballon11.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531337405857832/Ballon12.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531341244694558/Ballon13.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531344004677642/Ballon14.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531347698810880/Ballon15.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531350358786098/Ballon16.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531352551882772/Ballon17.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531355429044304/Ballon18.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531356994437130/Ballon19.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532465057333288/Ballon20.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532475321581628/Ballon21.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532531248562247/Ballon22.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532541876011018/Ballon23.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532549120098354/Ballon24.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532557257179226/Ballon25.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532565746581504/Ballon26.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532574687920188/Ballon27.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532581541937152/Ballon28.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532622889910352/Ballon29.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532628253638686/Ballon30.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532635304394752/Ballon31.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532641969012797/Ballon32.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532647971586058/Ballon33.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532656250355712/Ballon34.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532662197878784/Ballon35.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532693038596126/Ballon36.png"
+]
     
     global dealercardrandom
     usercard1 = random.randint(1,11)
@@ -184,11 +210,17 @@ async def blackjack(ctx):
     userwagerlosings = userwagerint * -1
 
     while (Working == True):
+        
+        if(userwagerint < 0):
+            await ctx.send("Wager cannot be negative")
+            Working = False
+            break
+        
         if(userwagerint > bankamount):
             await ctx.send("You are to broke, try again")
             Working = False
             break
-
+    
         startem = discord.Embed(title = f"{ctx.author.name}'s Cards", color = discord.Color.purple())
         startem.add_field(name = f"Your Cards ", value = f"{usercard1} {usercard2}")
         startem.add_field(name = f"Dealer Cards", value = f"{dealercardrandom}", inline = False)
@@ -538,11 +570,15 @@ async def roullete(ctx):
     userwagerlosing = userwager * -1
     
     while(Working == True):
+        if(userwager < 0):
+            await ctx.send("Wager cannot be negative")
+            Working = False
+            break
         
         if(userwager > bankamount):
-                await ctx.send("You are to broke, try again")
-                Working = False
-                break
+            await ctx.send("You are to broke, try again")
+            Working = False
+            break
         
         if userguess.lower() == "red":
             
@@ -612,12 +648,6 @@ async def roullete(ctx):
                 with open("mainbank.json", "w") as f:
                     json.dump(users, f)
                 Working = False
-
-
-
-
-
-  
 
 
 @client.event
