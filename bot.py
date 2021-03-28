@@ -10,7 +10,7 @@ import scrape
 import tkn
 from scrape import discordjoke
 from scrape import discordjokesingle
-from f1 import raceSchedule
+from f1 import raceSchedule, constructorStandings
 
 client = commands.Bot(command_prefix = "!")
 bot = commands.Bot(command_prefix='?')
@@ -26,15 +26,14 @@ async def on_message(message):
     if message.content.startswith(str("<:travvypatty:769418655829196810>")):
         await message.channel.send("https://cdn.discordapp.com/attachments/321896054452649985/769591917042204713/small_trav.PNG")
 
-    if message.content.startswith("f1"):
+    if message.content.startswith("2021 f1"):
         userinput = message.content.split()
-        racenumbersplit = userinput[1]
+        racenumbersplit = userinput[2]
         racenumber = int(racenumbersplit) - 1
 
         racedate = raceSchedule(racenumber)[2]
         racedate.split()
         finalracedate = (racedate[5] + racedate[6] +"-" + racedate[8] + racedate[9])
-
 
         f1embed = discord.Embed(title = str(raceSchedule(racenumber)[0]), color = discord.Color.purple())
         f1embed.add_field(name = "Country", value = str(raceSchedule(racenumber)[1]), inline=False)
@@ -43,8 +42,21 @@ async def on_message(message):
         f1embed.add_field(name = "Date", value = finalracedate,inline=False)
         await message.channel.send(embed = f1embed)
        
-        # await message.channel.send(raceSchedule(int(racenumber)))
-        
+    if message.content.startswith("f1"):
+        userinput = message.content.split()
+        racedate = userinput[1]
+        finalPosition = constructorStandings(racedate)[0]
+
+        finalScore = constructorStandings(racedate)[1]
+
+        f1embed = discord.Embed(title = f"{racedate} Constructors Championship", color = discord.Color.purple())
+
+        f1embed.add_field(name = "Postion", value = f"{(finalPosition[0])}\n{(finalPosition[1])}\n{(finalPosition[2])}\n{(finalPosition[3])}\n{(finalPosition[4])}\
+        \n{(finalPosition[5])}\n{(finalPosition[6])}\n{(finalPosition[7])}\n{(finalPosition[8])}\n{(finalPosition[9])}")
+        f1embed.add_field(name = "Points", value = f"{(finalScore[0])}\n{(finalScore[1])}\n{(finalScore[2])}\n{(finalScore[3])}\n{(finalScore[4])}\
+        \n{(finalScore[5])}\n{(finalScore[6])}\n{(finalScore[7])}\n{(finalScore[8])}\n{(finalScore[9])}")
+            
+        await message.channel.send(embed = f1embed)
 
     await client.process_commands(message)
 
@@ -141,45 +153,7 @@ async def coinflip(ctx):
 @client.command()
 @commands.cooldown(1,5)
 async def blackjack(ctx):
-    roulletepictures = [
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531285312602122/Ballon0.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531287955013642/Ballon1.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531292170944512/Ballon2.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531299594731570/Ballon3.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531303406960640/Ballon4.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531306753884212/Ballon5.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531310777139260/Ballon6.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531315986333736/Ballon7.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531320956583986/Ballon8.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531325230186536/Ballon9.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531329818624008/Ballon10.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531333073666058/Ballon11.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531337405857832/Ballon12.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531341244694558/Ballon13.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531344004677642/Ballon14.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531347698810880/Ballon15.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531350358786098/Ballon16.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531352551882772/Ballon17.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531355429044304/Ballon18.png",
-    "https://cdn.discordapp.com/attachments/593265613527580674/814531356994437130/Ballon19.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532465057333288/Ballon20.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532475321581628/Ballon21.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532531248562247/Ballon22.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532541876011018/Ballon23.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532549120098354/Ballon24.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532557257179226/Ballon25.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532565746581504/Ballon26.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532574687920188/Ballon27.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532581541937152/Ballon28.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532622889910352/Ballon29.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532628253638686/Ballon30.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532635304394752/Ballon31.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532641969012797/Ballon32.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532647971586058/Ballon33.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532656250355712/Ballon34.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532662197878784/Ballon35.png",
-    "https://cdn.discordapp.com/attachments/666082097714167808/814532693038596126/Ballon36.png"
-]
+    
     
     global dealercardrandom
     usercard1 = random.randint(1,11)
@@ -546,6 +520,45 @@ async def getmoney(ctx):
 
 @client.command()
 async def roullete(ctx):
+    roulletepictures = [
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531285312602122/Ballon0.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531287955013642/Ballon1.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531292170944512/Ballon2.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531299594731570/Ballon3.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531303406960640/Ballon4.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531306753884212/Ballon5.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531310777139260/Ballon6.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531315986333736/Ballon7.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531320956583986/Ballon8.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531325230186536/Ballon9.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531329818624008/Ballon10.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531333073666058/Ballon11.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531337405857832/Ballon12.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531341244694558/Ballon13.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531344004677642/Ballon14.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531347698810880/Ballon15.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531350358786098/Ballon16.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531352551882772/Ballon17.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531355429044304/Ballon18.png",
+    "https://cdn.discordapp.com/attachments/593265613527580674/814531356994437130/Ballon19.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532465057333288/Ballon20.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532475321581628/Ballon21.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532531248562247/Ballon22.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532541876011018/Ballon23.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532549120098354/Ballon24.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532557257179226/Ballon25.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532565746581504/Ballon26.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532574687920188/Ballon27.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532581541937152/Ballon28.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532622889910352/Ballon29.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532628253638686/Ballon30.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532635304394752/Ballon31.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532641969012797/Ballon32.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532647971586058/Ballon33.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532656250355712/Ballon34.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532662197878784/Ballon35.png",
+    "https://cdn.discordapp.com/attachments/666082097714167808/814532693038596126/Ballon36.png"
+]
     Working = True
     rednumbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
     blacknumbers = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
