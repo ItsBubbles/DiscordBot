@@ -53,8 +53,8 @@ async def on_message(message):
 
         f1embed.add_field(name = "Postion", value = f"{(finalPosition[0])}\n{(finalPosition[1])}\n{(finalPosition[2])}\n{(finalPosition[3])}\n{(finalPosition[4])}\
         \n{(finalPosition[5])}\n{(finalPosition[6])}\n{(finalPosition[7])}\n{(finalPosition[8])}\n{(finalPosition[9])}")
-        f1embed.add_field(name = "Points", value = f"{(finalScore[0])}\n{(finalScore[1])}\n{(finalScore[2])}\n{(finalScore[3])}\n{(finalScore[4])}\
-        \n{(finalScore[5])}\n{(finalScore[6])}\n{(finalScore[7])}\n{(finalScore[8])}\n{(finalScore[9])}")
+        f1embed.add_field(name = "Points", value = str(f"{(finalScore[0])}\n{(finalScore[1])}\n{(finalScore[2])}\n{(finalScore[3])}\n{(finalScore[4])}\
+        \n{(finalScore[5])}\n{(finalScore[6])}\n{(finalScore[7])}\n{(finalScore[8])}\n{(finalScore[9])}"))
             
         await message.channel.send(embed = f1embed)
 
