@@ -11,6 +11,7 @@ import tkn
 from scrape import discordjoke
 from scrape import discordjokesingle
 from f1 import raceSchedule, constructorStandings
+from nasaApi import POD
 
 client = commands.Bot(command_prefix = "!")
 bot = commands.Bot(command_prefix='?')
@@ -57,6 +58,17 @@ async def on_message(message):
         \n{(finalScore[5])}\n{(finalScore[6])}\n{(finalScore[7])}\n{(finalScore[8])}\n{(finalScore[9])}"))
             
         await message.channel.send(embed = f1embed)
+
+
+    if message.content.startswith("POD"):
+        userinput = message.content.split()
+        url = POD(userinput[1])
+        print(url)
+        nasaem = discord.Embed(title = f"Picture of the day {userinput[1]}", color = discord.Color.blue())
+        nasaem.set_image(url = url)
+        await message.channel.send(embed = nasaem)
+
+    
 
     await client.process_commands(message)
 
