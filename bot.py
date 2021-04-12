@@ -16,6 +16,9 @@ from nasaApi import POD
 client = commands.Bot(command_prefix = "!")
 bot = commands.Bot(command_prefix='?')
 dealercardrandom = 0
+global annoyworking
+annoyworking = True
+
 
 @client.event
 async def on_ready():
@@ -68,15 +71,28 @@ async def on_message(message):
         nasaem.set_image(url = url)
         await message.channel.send(embed = nasaem)
 
-    
-
     await client.process_commands(message)
 
 @client.command()
 async def joke(ctx):
     await ctx.send(str(scrape.discordjokesingle()))
 
-
+@client.command()
+async def annoy(ctx):
+    userinput = ctx.message.content.split()
+    global annoyworking
+    annoyworking = True
+    
+    while annoyworking == True:
+        await ctx.send(userinput[1])
+        time.sleep(1)
+    
+@client.command()
+async def stop(ctx):
+    print("test")
+    global annoyworking 
+    annoyworking = False
+    return annoyworking
 
 @client.command()
 async def coinflip(ctx):
@@ -114,8 +130,7 @@ async def coinflip(ctx):
             await ctx.send("You are to broke, try again")
             working = False
             break
-        
-            
+                 
         if str(coinflipresponse.content.lower()) == "heads":
             if randomcoin == 0:
                 users[str(user.id)]["bank"] += coinflipwinnings
@@ -159,8 +174,6 @@ async def coinflip(ctx):
                 finalem.add_field(name = "Heads", value = f"You lost {coinflipfloat} $")
                 await ctx.send (embed = finalem)
                 working = False
-
-
 
 @client.command()
 @commands.cooldown(1,5)
@@ -251,7 +264,6 @@ async def blackjack(ctx):
                 await ctx.send(embed = standem)
                 Working = False
                 
-            
             elif (dealercardtotal1 > 21):
                 
                 standem1 = discord.Embed(title = f"{ctx.author.name}'s Winnings", color = discord.Color.purple())
@@ -275,7 +287,6 @@ async def blackjack(ctx):
                 await ctx.send (embed = standem2)
                 Working = False
 
-            
         userhit2 = await client.wait_for("message", check = is_correct)
 
         if str(userhit2.content.lower()) == "hit":
@@ -337,8 +348,6 @@ async def blackjack(ctx):
                 await ctx.send (embed = standem2)
                 Working = False
             
-            
-        
         userhit3 = await client.wait_for("message", check = is_correct)
 
         if str(userhit3.content.lower()) == "hit":
