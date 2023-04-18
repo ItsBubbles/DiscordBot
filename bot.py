@@ -10,15 +10,14 @@ import scrape
 import tkn
 from scrape import discordjoke
 from scrape import discordjokesingle
-from f1 import raceSchedule, constructorStandings
 from nasaApi import POD
+from bettingInfo import bettingOdds
 
-client = commands.Bot(command_prefix = "!")
+client = commands.Bot(command_prefix = ".")
 bot = commands.Bot(command_prefix='?')
 dealercardrandom = 0
 global annoyworking
 annoyworking = True
-
 
 @client.event
 async def on_ready():
@@ -30,39 +29,6 @@ async def on_message(message):
     if message.content.startswith(str("<:travvypatty:769418655829196810>")):
         await message.channel.send("https://cdn.discordapp.com/attachments/321896054452649985/769591917042204713/small_trav.PNG")
 
-    if message.content.startswith("2021 f1"):
-        userinput = message.content.split()
-        racenumbersplit = userinput[2]
-        racenumber = int(racenumbersplit) - 1
-
-        racedate = raceSchedule(racenumber)[2]
-        racedate.split()
-        finalracedate = (racedate[5] + racedate[6] +"-" + racedate[8] + racedate[9])
-
-        f1embed = discord.Embed(title = str(raceSchedule(racenumber)[0]), color = discord.Color.purple())
-        f1embed.add_field(name = "Country", value = str(raceSchedule(racenumber)[1]), inline=False)
-        f1embed.add_field(name = "City", value = str(raceSchedule(racenumber)[4]), inline=False)
-        f1embed.add_field(name = "Circuit Name", value = str(raceSchedule(racenumber)[3]), inline=False)
-        f1embed.add_field(name = "Date", value = finalracedate,inline=False)
-        await message.channel.send(embed = f1embed)
-       
-    if message.content.startswith("f1"):
-        userinput = message.content.split()
-        racedate = userinput[1]
-        finalPosition = constructorStandings(racedate)[0]
-
-        finalScore = constructorStandings(racedate)[1]
-
-        f1embed = discord.Embed(title = f"{racedate} Constructors Championship", color = discord.Color.purple())
-
-        f1embed.add_field(name = "Postion", value = f"{(finalPosition[0])}\n{(finalPosition[1])}\n{(finalPosition[2])}\n{(finalPosition[3])}\n{(finalPosition[4])}\
-        \n{(finalPosition[5])}\n{(finalPosition[6])}\n{(finalPosition[7])}\n{(finalPosition[8])}\n{(finalPosition[9])}")
-        f1embed.add_field(name = "Points", value = str(f"{(finalScore[0])}\n{(finalScore[1])}\n{(finalScore[2])}\n{(finalScore[3])}\n{(finalScore[4])}\
-        \n{(finalScore[5])}\n{(finalScore[6])}\n{(finalScore[7])}\n{(finalScore[8])}\n{(finalScore[9])}"))
-            
-        await message.channel.send(embed = f1embed)
-
-
     if message.content.startswith("POD"):
         userinput = message.content.split()
         url = POD(userinput[1])
@@ -73,6 +39,28 @@ async def on_message(message):
 
     await client.process_commands(message)
 
+@client.command()
+async def bets(ctx):
+    gameList = bettingOdds()
+    betEmbed = discord.Embed(title = f"Betting Lines", color = discord.Color.purple())
+    total = ""
+    for game in gameList:
+        betEmbed.add_field(name="\u200b" , value =f"**{game[4]} vs {game[8]}**", inline=True)
+        betEmbed.add_field(name="Money Line", value=f"**{game[5]} {game[9]}**", inline=False)
+        betEmbed.add_field(name = "Spread", value = f"**{game[6]}**", inline=False)
+        betEmbed.add_field(name = "O/U", value = f"**{game[7][2:]}**", inline=False)
+        
+        fields = [betEmbed.title, betEmbed.description]
+
+        fields.extend([field.name for field in betEmbed.fields])
+        fields.extend([field.value for field in betEmbed.fields])
+        for item in fields:
+            total += str(item) if str(item) != 'Embed.Empty' else ''
+        if 1000 < len(total) < 4096:
+            await ctx.send(embed = betEmbed)
+
+            betEmbed = discord.Embed(title = f"Betting Lines", color = discord.Color.purple())
+            total = ""
 @client.command()
 async def joke(ctx):
     await ctx.send(str(scrape.discordjokesingle()))
@@ -178,7 +166,6 @@ async def coinflip(ctx):
 @client.command()
 @commands.cooldown(1,5)
 async def blackjack(ctx):
-    
     
     global dealercardrandom
     usercard1 = random.randint(1,11)
@@ -693,4 +680,4 @@ async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
         await ctx.send(f'{random.choice(greedlist)}, wait %.0f seconds' % error.retry_after)
 
-client.run(tkn.tkn)
+client.run(tkn.discordTkn)

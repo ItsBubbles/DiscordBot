@@ -2,10 +2,10 @@ import tkn
 import requests
 import json
 
-apiKey = (tkn.nasaKey)
+apiKey = (tkn.nasaTkn)
 
 def POD(date):
-    pictureoftheday = requests.get(f"https://api.nasa.gov/planetary/apod/?date={date}&{apiKey}")
+    pictureoftheday = requests.get(f"https://api.nasa.gov/planetary/apod/?date={date}&api_key={apiKey}")
     nasaPOD = json.loads(pictureoftheday.text)["url"]
     return (nasaPOD)
 
